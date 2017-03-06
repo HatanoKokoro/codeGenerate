@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/com.springsource.org.aspectj.weaver-1.6.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/ezmorph-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/mybatis-3.2.4.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/mybatis-spring-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/mysql-connector-java-5.1.10-bin.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-aop-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-aspects-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-beans-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-context-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-context-support-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-core-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-expression-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-jdbc-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-test-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-tx-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-web-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/spring-webmvc-4.3.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/generate/WebContent/WEB-INF/lib/freemarker-2.3.15.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
