@@ -36,7 +36,12 @@ public class MyFreeMarker {
 	public static final String DATE_FROMATE = "yyyy-MM-dd HH:mm:ss";
 	
 	public static final String FTLS_PATH = "src/org/ftls";
+	public static final String CONTROLLER = "controller.ftl";
 	public static final String ENTITY = "entity.ftl";
+	public static final String ISERVICE = "IService.ftl";
+	public static final String SERVICE = "service.ftl";
+	public static final String IDao = "IDao.ftl";
+	public static final String SQLMAPPER = "sqlmapper.ftl";
 	
 	public static Map<String, Object> map=new HashMap<String,Object>();
 	
@@ -71,10 +76,66 @@ public class MyFreeMarker {
 			}
 			map.put("pk", pk);
 			
+			CreateController(className, list, annotation, map, pk);
 			CreateEntity(className, list, annotation, map);
+			CreateIService(className, list, annotation, map, pk);
+			CreateService(className, list, annotation, map, pk);
+			CreateIDao(className, list, annotation, map, pk);
+			CreateSqlMapper(tableName, className, list, annotation, map, pk);
 			
 		}
 		
+	}
+	
+	public static void CreateController(String className,List list,Annotation annotation,Map map,String pk){
+		try{
+			String packageUrl = map.get("url").toString();
+			template = configuration.getTemplate(CONTROLLER);
+			
+			Map<String, Object> root = new HashMap<String, Object>();
+			
+			String ClassName = StringUtils.upperCaseFirstOne(className);
+			
+			String importText = "import "+packageUrl+".service.interfaces.I"+ClassName+"Service";
+			root.put("import", importText);
+			
+			String alias = packageUrl+".entity."+ClassName;
+			root.put("alias", alias);
+			
+			String mapper = (packageUrl+".mapper.").replace(".", "/")+ClassName+"Mapper.xml";
+			root.put("mapper", mapper);
+			root.put("pk", pk);
+			root.put("Pk", StringUtils.upperCaseFirstOne(pk));
+			
+			packageUrl = packageUrl + ".controller";
+			root.put("pack", packageUrl);
+					
+			String beanPath = map.get("workspace")+"/src/"+packageUrl.replace(".", "/")+"/";
+			
+			File filePath = new File(beanPath);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+			
+			String beanFilePath = beanPath+ClassName+"Controller.java";
+			File file = new File(beanFilePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			root.put("annotation", annotation );
+			root.put("ClassName", ClassName);
+			root.put("className", className);
+			
+			writer = new FileWriter(file); 
+			template.process(root, writer);
+			writer.flush();
+			writer.close();
+			System.out.println("[创建controller成功!]");
+		}catch(Exception e){
+			System.out.println("controller创建异常！问题" + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	public static void CreateEntity(String className,List list,Annotation annotation,Map map){
@@ -112,10 +173,214 @@ public class MyFreeMarker {
 			writer.close();
 			System.out.println("[创建实体类成功!]");
 		}catch(Exception e){
-			log.info("实体创建异常!"+e.getMessage());
-			System.out.println("实体创建异常!"+e.getMessage());
+			System.out.println("[实体创建异常!]"+e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	public static void CreateIService(String className,List list,Annotation annotation,Map map,String pk){
+		
+		try{
+			String packageUrl = map.get("url").toString();
+			template = configuration.getTemplate(ISERVICE);
+
+			Map<String ,Object> root = new HashMap<String,Object>();
+			packageUrl = packageUrl+".service.interfaces";
+			root.put("pack", packageUrl);
+			root.put("pk", pk);
+			
+			String ClassName = StringUtils.upperCaseFirstOne(className);
+			String beanPath = map.get("workspace")+"/src/"+packageUrl.replace(".", "/")+"/";
+			File filePath = new File(beanPath);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+			String beanFilePath = beanPath+"I"+ClassName+"Service.java";
+			File file = new File(beanFilePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			root.put("annotation", annotation );
+			root.put("ClassName", ClassName);
+			root.put("className", className);
+			
+			writer = new FileWriter(file);
+			template.process(root, writer);
+			writer.flush();
+			writer.close();
+			System.out.println("[service接口生成成功!]");
+		}catch(Exception e){
+			System.out.println("service接口创建异常！问题" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void CreateService(String className,List list,Annotation annotation,Map map,String pk){
+		
+		try{
+			String packageUrl = map.get("url").toString();
+			template = configuration.getTemplate(SERVICE);
+
+			Map<String ,Object> root = new HashMap<String,Object>();
+			root.put("pk", pk);
+			
+			String ClassName = StringUtils.upperCaseFirstOne(className);
+			String importText = "import "+packageUrl+".service.interfaces.I"+ClassName+"Service;"+
+			"\nimport "+packageUrl+".dao.interfaces.I"+ClassName+"Dao;";
+			
+			packageUrl = packageUrl+".service";
+			root.put("pack", packageUrl);
+			root.put("import", importText);
+			String beanPath = map.get("workspace")+"/src/"+packageUrl.replace(".", "/")+"/";
+			File filePath = new File(beanPath);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+			String beanFilePath = beanPath+ClassName+"Service.java";
+			File file = new File(beanFilePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			root.put("annotation", annotation );
+			root.put("ClassName", ClassName);
+			root.put("className", className);
+			
+			writer = new FileWriter(file);
+			template.process(root, writer);
+			writer.flush();
+			writer.close();
+			System.out.println("[service生成成功!]");
+		}catch(Exception e){
+			System.out.println("service创建异常！问题" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void CreateIDao(String className,List list,Annotation annotation,Map map,String pk){
+		
+		try{
+			String packageUrl = map.get("url").toString();
+			template = configuration.getTemplate(IDao);
+
+			Map<String ,Object> root = new HashMap<String,Object>();
+			packageUrl = packageUrl+".dao.interfaces";
+			root.put("pack", packageUrl);
+			root.put("pk", pk);
+			
+			String ClassName = StringUtils.upperCaseFirstOne(className);
+			String beanPath = map.get("workspace")+"/src/"+packageUrl.replace(".", "/")+"/";
+			File filePath = new File(beanPath);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+			String beanFilePath = beanPath+"I"+ClassName+"Dao.java";
+			File file = new File(beanFilePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			root.put("annotation", annotation );
+			root.put("ClassName", ClassName);
+			root.put("className", className);
+			
+			writer = new FileWriter(file);
+			template.process(root, writer);
+			writer.flush();
+			writer.close();
+			System.out.println("[Dao接口生成成功!]");
+		}catch(Exception e){
+			System.out.println("Dao接口创建异常！问题" + e.getMessage());
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void CreateSqlMapper(String tableName,String className,List<Map<String,String>> list,Annotation annotation,Map map,String pk){
+		
+		try{
+			String packageUrl = map.get("url").toString();
+			template = configuration.getTemplate(SQLMAPPER);
+			
+			Map<String ,Object> root = new HashMap<String,Object>();
+			root.put("pack", packageUrl);
+			packageUrl = packageUrl+".mapper";
+			root.put("pk", pk);
+			root.put("Pk", StringUtils.getHumpName(pk));
+			CreateSql(tableName, list, root, pk);
+			
+			String ClassName = StringUtils.upperCaseFirstOne(className);
+			String beanPath = map.get("workspace")+"/src/"+packageUrl.replace(".", "/")+"/";
+			File filePath = new File(beanPath);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+			String beanFilePath = beanPath+ClassName+"Mapper.xml";
+			File file = new File(beanFilePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			for(int i=0;i<list.size();i++){
+				if(list.get(i).get("key")!=null && list.get(i).get("key").equals("PRI"))
+					list.remove(i);
+			}
+			
+			root.put("annotation", annotation );
+			root.put("ClassName", ClassName);
+			root.put("className", className);
+			root.put("list", list);
+			
+			writer = new FileWriter(file);
+			template.process(root, writer);
+			writer.flush();
+			writer.close();
+			System.out.println("[sqlMapper生成成功!]");
+		}catch(Exception e){
+			System.out.println("sqlMapper创建异常！问题" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void CreateSql(String tableName,List<Map<String,String>> list,Map root,String pk){
+		
+		String insert = "insert into "+tableName+"(";
+		String values = "values (";
+		String where = " where "+pk+"=#{"+pk+"}";
+		String update = "update "+tableName+" set ";
+		String delete = "delete from "+tableName;
+		
+		String select = "select <include refid='columns'></include> from "+tableName;
+		String count = "select count(*) from "+tableName;
+		
+		String columns ="";
+		
+		for(int i=0;i<list.size();i++){
+			if(i==(list.size()-1)){
+				insert += list.get(i).get("column_name")+")";
+				values += "#{"+list.get(i).get("humpColumnName")+"})";
+				update += list.get(i).get("column_name")+"=#{"+list.get(i).get("humpColumnName")+"}";
+				columns += list.get(i).get("column_name")+" as "+list.get(i).get("humpColumnName");
+				break;
+			}
+			insert += list.get(i).get("column_name")+",";
+			values += "#{"+list.get(i).get("humpColumnName")+"},";
+			update += list.get(i).get("column_name")+"=#{"+list.get(i).get("humpColumnName")+"},";
+			columns += list.get(i).get("column_name")+" as "+list.get(i).get("humpColumnName")+",";
+		}
+		
+		String PageSql = "\n \t\t<where><!-- where 可以自动处理and -->	\n \t\t\t<if test='nameKey != null'> "
+		+ "	<!-- name like '%${nameKey}%'-->\n\n\t\t\t</if>	\n\t\t</where>\n"
+		+ "	\t\t<if test='pageIndex!=null and pageSize!=null'>\n \t\t\tlimit  #{pageIndex},#{pageSize}\n\t\t\t</if>";
+		
+		root.put("insert", insert+values);
+		root.put("update", update+where);
+		root.put("delete", delete+where);
+		root.put("selectById", select+where);
+		root.put("selectPage", select+PageSql);
+		root.put("columns", columns);
+		root.put("count", count);
 	}
 	
 	public static void getPropertiesEles(Map map)throws Exception{

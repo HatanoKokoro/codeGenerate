@@ -1,7 +1,7 @@
 package ${pack};
 
 import java.util.*;
-import java.sql.Timestamp;
+import java.sql.*;
 
 /**
  * @author ${annotation.authorName}
