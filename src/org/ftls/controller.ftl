@@ -50,12 +50,13 @@ public class ${ClassName}Controller{
 	
 	@RequestMapping(value = "/tolist", method = RequestMethod.GET)
 	public ModelAndView toList (HttpServletRequest request,HttpServletResponse response){
-		ModelAndView mv = new ModelAndView("/${className}/${className}_list");
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("${className}/${className}_list");
 		return mv;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	public String list(HttpServletRequest request,HttpServletResponse response) {
 		TableData pagingInfo = new TableData();
 		try {
@@ -75,7 +76,7 @@ public class ${ClassName}Controller{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/del",method=RequestMethod.POST)
+	@RequestMapping(value="/del",method=RequestMethod.POST,produces = "application/json; charset=utf-8")
 	public String del(@RequestParam int id, HttpServletRequest request,HttpServletResponse response){
 		try{
 			int size = ${className}Service.del(id);

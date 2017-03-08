@@ -12,8 +12,11 @@ import java.sql.*;
 
 public class ${ClassName}{
 <#list list as p>
+
 	private ${p.data_type} ${p.humpColumnName}; // ${p.column_comment}
-	
+</#list>
+<#list list as p>	
+
 	public ${p.data_type} get${p.methodName}(){
 		return ${p.humpColumnName};
 	}

@@ -42,6 +42,8 @@ public class MyFreeMarker {
 	public static final String SERVICE = "service.ftl";
 	public static final String IDao = "IDao.ftl";
 	public static final String SQLMAPPER = "sqlmapper.ftl";
+	public static final String LIST_JSP = "listjsp.ftl";
+	public static final String DETAIL_JSP = "detailjsp.ftl";
 	
 	public static Map<String, Object> map=new HashMap<String,Object>();
 	
@@ -82,7 +84,7 @@ public class MyFreeMarker {
 			CreateService(className, list, annotation, map, pk);
 			CreateIDao(className, list, annotation, map, pk);
 			CreateSqlMapper(tableName, className, list, annotation, map, pk);
-			
+			CreateListJSP(className, list, annotation, map, pk);
 		}
 		
 	}
@@ -341,6 +343,44 @@ public class MyFreeMarker {
 			System.out.println("sqlMapper创建异常！问题" + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+public static void CreateListJSP(String className,List list,Annotation annotation,Map map,String pk){
+		
+		try{
+			template = configuration.getTemplate(LIST_JSP);
+			template.setEncoding("UTF-8");
+			
+			Map<String ,Object> root = new HashMap<String,Object>();
+			root.put("pk", pk);
+			
+			String ClassName = StringUtils.upperCaseFirstOne(className);
+			String beanPath = map.get("workspace")+"/WebContent/WEB-INF/pages/"+className+"/";
+			File filePath = new File(beanPath);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+			String beanFilePath = beanPath+className+"_list.jsp";
+			File file = new File(beanFilePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			root.put("annotation", annotation );
+			root.put("ClassName", ClassName);
+			root.put("className", className);
+			root.put("list", list);
+			
+			writer = new FileWriter(file);
+			template.process(root, writer);
+			writer.flush();
+			writer.close();
+			System.out.println("[list_jsp生成成功!]");
+		}catch(Exception e){
+			System.out.println("list_jsp创建异常！问题" + e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void CreateSql(String tableName,List<Map<String,String>> list,Map root,String pk){
