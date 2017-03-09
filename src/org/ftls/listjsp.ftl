@@ -1,11 +1,8 @@
-
 <!DOCTYPE html>
+<html lang="zh-cn">
 <%@page language="java" contentType="text/html;charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="bpt" value="${r'${pageContext.request.contextPath}'}"/>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
 <%
 	String path = request.getContextPath();
@@ -27,17 +24,6 @@
    <link href="static/css/style-default.css" rel="stylesheet" id="style_color" />
    <link href="static/assets/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
    <link href="static/assets/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
-   
-   <style type="text/css">
-    	.bootstrap-table{
-		    margin-left: 20px;
-		    margin-right: 20px;
-    	}
-    	.pagebody{
-    		margin-left: 20px;
-		    margin-right: 20px;
-    	}
-    </style>
    
 </head>
 
@@ -73,14 +59,14 @@
          </div>
          <!-- END PAGE CONTAINER-->
          <!-- 你添加的内容  -->
-          <div class="row-fluid">
+          <div class="row-fluid ">
        		<div class="input-group pagebody">
 				<input type="text" placeholder="请输入关键词"  class="form-control" id="searchContent"/>
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-primary" id="searchButton" style="margin-bottom: 9px;">搜索</button>
 				</span>
 				<div style="float:right;">
-				<a class="btn btn-success " href="${className}/add" style="margin-right:20px">添加</a>
+				<a class="btn btn-success " href="${className}/toAdd">添加</a>
 				</div>
 			</div>
               <table class="table table-hover no-margins table-striped text-center"  id="table"></table>
@@ -113,11 +99,11 @@
 		var operateEvents = {
 			"click .edit": function(e, value, row, index) {
 				// 编辑
-				window.location.href = "${r'${bpt}'}/${className}/modify?${pk}="+row.${pk};
+				window.location.href = "${r'${bpt}'}/${className}/toModify?${Pk}="+row.${Pk};
 			},
 			"click .detail": function(e, value, row, index) {
 				// 详情
-				window.location.href = "${r'${bpt}'}/${className}/detail?${pk}="+row.${pk};
+				window.location.href = "${r'${bpt}'}/${className}/toDetail?${Pk}="+row.${Pk};
 			},
 			"click .remove": function(e, value, row, index) {
 				// 删除
@@ -131,7 +117,7 @@
 						url: '${className}/del',
 						type: 'POST',
 						data: {
-							id: row.id
+							${Pk}: row.${Pk}
 						},
 						success: function(data) {
 							layer.alert(data.msg, {
@@ -186,7 +172,7 @@
 							title: '序号',
 							halign: 'center',
 							formatter: function(value, row, index) {
-								if(row.${pk} == "") {
+								if(row.${Pk} == "") {
 									return "";
 								} else {
 									return index + 1;
@@ -203,7 +189,7 @@
 						{
 							title: "操作",
 							formatter: function(value, row, index) {
-								if(row.${pk}!=''){
+								if(row.${Pk}!=''){
 					        		return  '<a href="javascript:;" class="edit" title="编辑"><i class="icon-edit"></i></a>' + '&nbsp;&nbsp;&nbsp;'+
 					        		 '<a href="javascript:;" class="detail" title="详情"><i class="icon-search"></i></a>' + '&nbsp;&nbsp;&nbsp;'+
 					        		 '<a href="javascript:;" class="remove" title="删除"><i class="icon-remove">' + '&nbsp;&nbsp;&nbsp;';

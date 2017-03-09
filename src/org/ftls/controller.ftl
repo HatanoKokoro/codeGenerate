@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONObject;
 import org.util.ReturnMsg;
+import org.util.Common;
 import org.util.TableData;
 import org.util.JsonUtils;
 ${import};
@@ -48,7 +49,7 @@ public class ${ClassName}Controller{
 	
 	private ReturnMsg msg;
 	
-	@RequestMapping(value = "/tolist", method = RequestMethod.GET)
+	@RequestMapping(value = "/toList", method = RequestMethod.GET)
 	public ModelAndView toList (HttpServletRequest request,HttpServletResponse response){
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("${className}/${className}_list");
@@ -75,11 +76,73 @@ public class ${ClassName}Controller{
 		return pagingInfo.toString();
 	}
 	
+	@RequestMapping(value = "/toAdd", method = RequestMethod.GET)
+	public ModelAndView toAdd (HttpServletRequest request,HttpServletResponse response){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("${className}/${className}_add");
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/add",method=RequestMethod.POST,produces = "application/json; charset=utf-8")
+	public String add(@RequestParam Map map, HttpServletRequest request,HttpServletResponse response){
+		try{
+			String id = Common.getSysKey("${tableName}");
+			map.put("${Pk}",id);
+			int size = ${className}Service.insert(map);
+			msg = new ReturnMsg(true, "操作成功!" );
+		} catch (Exception e) {
+			msg = new ReturnMsg(false, "操作失败!" );
+				e.printStackTrace();
+			}
+			return JsonUtils.objectToString(msg);
+		}
+		
+		
+	@RequestMapping(value = "/toModify", method = RequestMethod.GET)
+	public ModelAndView toModify (@RequestParam String ${Pk},HttpServletRequest request,HttpServletResponse response){
+		ModelAndView mv = new ModelAndView();
+		try{
+			Map<String,Object> data = ${className}Service.findById(${Pk});
+			mv.setViewName("${className}/${className}_edit");
+			mv.addObject("data",data);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/modify",method=RequestMethod.POST,produces = "application/json; charset=utf-8")
+	public String modify(@RequestParam Map map, HttpServletRequest request,HttpServletResponse response){
+		try{
+			int size = ${className}Service.modify(map);
+			msg = new ReturnMsg(true, "操作成功!" );
+		} catch (Exception e) {
+			msg = new ReturnMsg(false, "操作失败!" );
+				e.printStackTrace();
+			}
+			return JsonUtils.objectToString(msg);
+		}
+	
+	@RequestMapping(value = "/toDetail", method = RequestMethod.GET)
+	public ModelAndView toAdd (@RequestParam String ${Pk},HttpServletRequest request,HttpServletResponse response){
+		ModelAndView mv = new ModelAndView();
+		try{
+			Map<String,Object> data = ${className}Service.findById(${Pk});
+			mv.setViewName("${className}/${className}_detail");
+			mv.addObject("data",data);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value="/del",method=RequestMethod.POST,produces = "application/json; charset=utf-8")
-	public String del(@RequestParam int id, HttpServletRequest request,HttpServletResponse response){
+	public String del(@RequestParam String ${Pk}, HttpServletRequest request,HttpServletResponse response){
 		try{
-			int size = ${className}Service.del(id);
+			int size = ${className}Service.del(${Pk});
 			msg = new ReturnMsg(true, "操作成功!" );
 		} catch (Exception e) {
 			msg = new ReturnMsg(false, "操作失败!" );

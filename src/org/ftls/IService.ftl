@@ -14,7 +14,7 @@ import java.util.*;
  
  	public int insert (Map<String,Object> map) throws Exception;
  	
- 	public int del(int ${pk}) throws Exception;
+ 	public int del(String ${Pk}) throws Exception;
  	
  	public int modify(Map<String,Object> map) throws Exception;
  	
@@ -22,7 +22,7 @@ import java.util.*;
 	
 	public long pageTotalCount() throws Exception;
 	
-	public Map<String,Object> findById(int ${pk}) throws Exception;
+	public Map<String,Object> findById(String ${Pk}) throws Exception;
  
  }
 	

@@ -24,8 +24,8 @@ public class ${ClassName}Service implements I${ClassName}Service{
 		return ${className}Dao.insert(map);
 	}
  	
- 	public int del(int ${pk}) throws Exception{
- 		return ${className}Dao.del(${pk});
+ 	public int del(String ${Pk}) throws Exception{
+ 		return ${className}Dao.del(${Pk});
  	}
  	
  	public int modify(Map<String,Object> map) throws Exception{
@@ -40,8 +40,8 @@ public class ${ClassName}Service implements I${ClassName}Service{
 		return ${className}Dao.pageTotalCount();
 	}
 	
-	public Map<String,Object> findById(int ${pk}) throws Exception{
-		return ${className}Dao.findById(${pk});
+	public Map<String,Object> findById(String ${Pk}) throws Exception{
+		return ${className}Dao.findById(${Pk});
 	}
 
 }

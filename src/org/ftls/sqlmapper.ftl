@@ -23,6 +23,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${columns}
 	</sql>
 	
+	<select id="findById" resultType="java.util.Map" parameterType="String">
+		${selectById}
+	</select>
+	
 	<select id="pageList" resultType="java.util.Map">
 		${selectPage}
 	</select>
@@ -31,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${count}
 	</select>
 	
-	<delete id="del" parameterType="int">
+	<delete id="del" parameterType="String">
 		${delete}
 	</delete>
 	
